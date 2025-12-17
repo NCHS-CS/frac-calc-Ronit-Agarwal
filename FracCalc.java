@@ -112,14 +112,45 @@ public class FracCalc {
       int num2 = parseNumerator(second);
       int den2 = parseDenominator(second); 
 
-      //Convert both numbers to improper fractions
-      num1 = convertToInproper(whole1, num1, den1);
-      num2 = convertToInproper(whole2, num2, den2);
+      //Divison by 0 warning
+      if (den1 == 0 || den2 == 0){
+         return "Error: Division by zero is undefined.";
+      }
 
-      //Find the common denominator and change numerator accordingly
-      int commonDen = den1 * den2;
-      int resultNum = num1 * den2 + num2 * den1;
-      int resultDen = commonDen;
+      //Convert both numbers to improper fractions
+      num1 = convertToImproper(whole1, num1, den1);
+      num2 = convertToImproper(whole2, num2, den2);
+
+      //Divison by 0 warning
+      if (op.equals("/") && den1 == 0) {
+         return "Error: Division by zero is undefined.";
+      }
+
+      //Declare Variables to track numerator and denominator
+      int resultNum = 0;
+      int resultDen = 1;
+
+      //Perform the operation based on the operator
+      if (op.equals("+")){
+         //Addition
+         resultNum = num1 * den2 + num2 * den1;
+         resultDen = den1 * den2;
+      }
+      else if (op.equals("-")){
+         //Subtraction
+         resultNum = num1 * den2 - num2 * den1;
+         resultDen = den1 * den2;
+      }
+      else if (op.equals("*")){
+         //Multiplication
+         resultNum = num1 * num2;
+         resultDen = den1 * den2;
+      }
+      else if (op.equals("/")){
+         //Division
+         resultNum = num1 * den2;
+         resultDen = den1 * num2;
+      }
 
       //Finds what factor to reduce the answer by and reduces it
       int gcdValue = gcd(resultNum, resultDen);
@@ -136,7 +167,6 @@ public class FracCalc {
       return formatResult(resultNum, resultDen);
    }
 
-   //Uses .contains, learned by https://www.w3schools.com/java/ref_string_contains.asp
    //Parse whole number from input String
    //input - full operand String
    //Return whole number as an integer
@@ -181,7 +211,7 @@ public class FracCalc {
    //num - numerator of mixed number
    //den - denominator of mixed number
    //Return numerator of improper fraction
-   public static int convertToInproper(int whole, int num, int den) {
+   public static int convertToImproper(int whole, int num, int den) {
       if (whole < 0) {
          return whole * den - num;
       } else {
@@ -218,7 +248,6 @@ public class FracCalc {
       }
       return whole + " " + remainder + "/" + den;
    }
-
 
    //Extract operator from String
    //input - full expression String
@@ -286,8 +315,8 @@ public class FracCalc {
       return Integer.parseInt(second);
    }
 
-   // Calculate the greatest common divisor of two integers
-   // using the Euclidean algorithm https://www.geeksforgeeks.org/dsa/euclidean-algorithms-basic-and-extended/
+   //Calculate the greatest common divisor of two integers
+   //using the Euclidean algorithm https://www.geeksforgeeks.org/dsa/euclidean-algorithms-basic-and-extended/
    //a - first integer
    //b - second integer
    //Return greatest common divisor of a and b
