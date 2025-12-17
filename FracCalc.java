@@ -112,18 +112,19 @@ public class FracCalc {
       int num2 = parseNumerator(second);
       int den2 = parseDenominator(second); 
 
-      //Divison by 0 warning
+      //Divison by 0 warning (when either denominator is 0)
       if (den1 == 0 || den2 == 0){
-         return "Error: Division by zero is undefined.";
+         return "Error: Division by zero";
       }
 
       //Convert both numbers to improper fractions
       num1 = convertToImproper(whole1, num1, den1);
       num2 = convertToImproper(whole2, num2, den2);
 
-      //Divison by 0 warning
-      if (op.equals("/") && den1 == 0) {
-         return "Error: Division by zero is undefined.";
+      //Divison by 0 warning (When user is trying to divide a fraction and the 2nd numerator is equal to 0, 
+      //meaning reciprocal has 0 in the denominator)
+      if (op.equals("/") && num2 == 0) {
+         return "Error: Division by zero";
       }
 
       //Declare Variables to track numerator and denominator
