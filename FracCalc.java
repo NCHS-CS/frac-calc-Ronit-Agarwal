@@ -147,7 +147,7 @@ public class FracCalc {
          resultDen = den1 * den2;
       }
       else if (op.equals("/")){
-         //Division
+         //Division (multiply by reciprocal)
          resultNum = num1 * den2;
          resultDen = den1 * num2;
       }
@@ -171,10 +171,13 @@ public class FracCalc {
    //input - full operand String
    //Return whole number as an integer
    public static int parseWhole(String input) {
+      //Call Mixed Number function if Mixed Number
       if (input.contains("_")) {
          return extractWholeFromMixed(input);
+      //Call Regular Fraction function if regular fraction
       } else if (input.contains("/")) {
          return 0;
+      //Call Whole Number function if whole number
       } else {
          return extractWholeFromNumber(input);
       }
@@ -184,8 +187,10 @@ public class FracCalc {
    //input - full operand String
    //Return numerator as an integer
    public static int parseNumerator(String input) {
+      //Call Mixed Number function if Mixed Number
       if (input.contains("_")) {
          return extractNumeratorFromMixed(input);
+      //Call Regular Fraction function if regular fraction
       } else if (input.contains("/")) {
          return extractNumeratorFromFraction(input);
       } else {
@@ -197,8 +202,10 @@ public class FracCalc {
    //input - full operand String
    //Return denominator as an integer
    public static int parseDenominator(String input) {
+      //Call Mixed Number function if Mixed Number
       if (input.contains("_")) {
          return extractDenominatorFromMixed(input);
+      //Call Regular Fraction function if regular fraction
       } else if (input.contains("/")) {
          return extractDenominatorFromFraction(input);
       } else {
@@ -212,6 +219,7 @@ public class FracCalc {
    //den - denominator of mixed number
    //Return numerator of improper fraction
    public static int convertToImproper(int whole, int num, int den) {
+      //Calculate improper fraction numerator based on whole number sign
       if (whole < 0) {
          return whole * den - num;
       } else {
@@ -224,21 +232,27 @@ public class FracCalc {
    //den - denominator of result
    //Return formatted result as a String
    public static String formatResult(int num, int den) {
+
+      //If numerator is 0, return 0
       if (num == 0){
          return "0";
       }
 
+      //Calculate whole number and remainder
       int whole = num / den;
       int remainder = num % den;
 
+      //Make remainder positive
       if (remainder < 0) {
          remainder = -remainder;
       }
 
+      //Format result based on whole number and remainder
       if (remainder == 0) {
          return "" + whole;
       }
 
+      //If whole number is 0, only return fraction part
       if (whole == 0) {
          if (num < 0) {
             return "-" + remainder + "/" + den;
@@ -246,6 +260,8 @@ public class FracCalc {
             return remainder + "/" + den;
          }
       }
+
+      //Return mixed number format
       return whole + " " + remainder + "/" + den;
    }
 
@@ -255,15 +271,16 @@ public class FracCalc {
    //secondSpace - index of second Space Character
    //Return operator as a String
    public static String extractOperator(String input, int firstSpace, int secondSpace){
+      //Extract operator using substring between first and second space
       return input.substring(firstSpace + 1, secondSpace);
    }
-
 
    //Extract second operand from String
    //input - full expression String
    //secondSpace - index of second Space Character
    //Return second operand as a String
    public static String extractSecondNumber(String input, int secondSpace){
+      //Extract second number using substring after second space
       return input.substring(secondSpace + 1);
    }
 
@@ -271,6 +288,7 @@ public class FracCalc {
    //second - second operand String in mixed number format
    //Return whole number part as an integer
    public static int extractWholeFromMixed(String second){
+      //Find underscore index and extract whole number part
       int underscore = second.indexOf("_");
       return Integer.parseInt(second.substring(0, underscore));
    }
@@ -279,6 +297,7 @@ public class FracCalc {
    //second - second operand String in mixed number format
    //Return numerator part as an integer
    public static int extractNumeratorFromMixed(String second){
+      //Find underscore and slash index and extract numerator part
       int underscore = second.indexOf("_");
       int slash = second.indexOf("/");
       return Integer.parseInt(second.substring(underscore + 1, slash));
@@ -288,6 +307,7 @@ public class FracCalc {
    //second - second operand String in mixed number format
    //Return denominator part as an integer
    public static int extractDenominatorFromMixed(String second){
+      //Find slash index and extract denominator part
       int slash = second.indexOf("/");
       return Integer.parseInt(second.substring(slash + 1));
    }
@@ -296,6 +316,7 @@ public class FracCalc {
    //second - second operand String in fraction format
    //Return numerator as an integer
    public static int extractNumeratorFromFraction(String second){
+      //Find slash index and extract numerator part
       int slash = second.indexOf("/");
       return Integer.parseInt(second.substring(0, slash));
    }
@@ -312,6 +333,7 @@ public class FracCalc {
    //second - second operand String as a whole number
    //Return whole number as an integer
    public static int extractWholeFromNumber(String second){
+      //Parse whole number String to integer
       return Integer.parseInt(second);
    }
 
@@ -326,14 +348,12 @@ public class FracCalc {
       }
       return gcd(b, a % b);
    }
-
-   
    
    // Returns a string that is helpful to the user about how
    // to use the program. These are instructions to the user.
    public static String provideHelp() {
-      // Prints out help text
-      String help = "Fraction Calculator Help:\n";
+      // Prints out help text for the user
+      String help = "\nFraction Calculator Help:\n";
       help += "Enter mathematical expressions with two numbers and an operator (+, -, *, /)\n";
       help += "Make sure to put underscores between whole numbers and fractions for mixed numbers.\n";
       help += "Examples: 1/2 + 1/4, 3 * 2_1/2, 4/5 - 1/3\n";
