@@ -1,6 +1,6 @@
 // Ronit Agarwal
 // Period 6
-// Mrs. Abuja
+// Mrs. Ahuja
 // Fraction Calculator Project
 
 import java.util.*;
